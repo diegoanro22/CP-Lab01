@@ -1,39 +1,55 @@
+import visitor.NodeVisitor;
+import java.util.HashSet;
 import java.util.Set;
 
-/** AST node representing the union (alternation) of two sub-expressions. */
+/**
+ * Nodo interno que representa el operador unión: left | right
+ */
 public class UnionNode extends Node {
 
-    /** The left operand of the union. */
-    public Node left;
+    public final Node left;
+    public final Node right;
 
-    /** The right operand of the union. */
-    public Node right;
+    public UnionNode(Node left, Node right) {
+        this.left = left;
+        this.right = right;
+    }
 
-    /** Returns true if either child is nullable. */
+    /**
+     * c1 | c2  →  nullable si alguno de los dos es nullable.
+     */
     @Override
     public boolean nullable() {
-        // TODO: implement
-        return false;
+        return left.nullable() || right.nullable();
     }
 
-    /** Returns the union of firstPos sets of both children. */
+    /**
+     * firstPos(c1|c2) = firstPos(c1) ∪ firstPos(c2)
+     */
     @Override
     public Set<Integer> firstPos() {
-        // TODO: implement
-        return null;
+        Set<Integer> result = new HashSet<>(left.firstPos());
+        result.addAll(right.firstPos());
+        return result;
     }
 
-    /** Returns the union of lastPos sets of both children. */
+    /**
+     * lastPos(c1|c2) = lastPos(c1) ∪ lastPos(c2)
+     */
     @Override
     public Set<Integer> lastPos() {
-        // TODO: implement
-        return null;
+        Set<Integer> result = new HashSet<>(left.lastPos());
+        result.addAll(right.lastPos());
+        return result;
     }
 
-    /** Accepts a visitor and delegates to visitUnion. */
     @Override
     public <T> T accept(NodeVisitor<T> visitor) {
-        // TODO: implement
-        return null;
+        return visitor.visitUnion(this);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + left + "|" + right + ")";
     }
 }

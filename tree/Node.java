@@ -1,17 +1,32 @@
+import visitor.NodeVisitor;
 import java.util.Set;
 
-/** Abstract base class representing a node in the regex AST. */
+/**
+ * Clase base abstracta para todos los nodos del árbol sintáctico.
+ */
+
 public abstract class Node {
 
-    /** Returns true if this node's language contains the empty string. */
+    /**
+     * Calcula si este nodo puede generar la cadena vacía (epsilon).
+     */
     public abstract boolean nullable();
 
-    /** Returns the set of positions that can begin a string matched by this node. */
+    /**
+     * Calcula el conjunto de posiciones que pueden ser el primer símbolo
+     * de una cadena generada por este nodo.
+     */
     public abstract Set<Integer> firstPos();
 
-    /** Returns the set of positions that can end a string matched by this node. */
+    /**
+     * Calcula el conjunto de posiciones que pueden ser el último símbolo
+     * de una cadena generada por este nodo.
+     */
     public abstract Set<Integer> lastPos();
 
-    /** Accepts a visitor and returns its computed result. */
+     /**
+     * Acepta un visitante. Cada subclase llama al método visit correspondiente.
+     * Patrón Visitor: double dispatch.
+     */
     public abstract <T> T accept(NodeVisitor<T> visitor);
 }

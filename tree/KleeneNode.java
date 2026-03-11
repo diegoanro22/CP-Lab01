@@ -1,36 +1,46 @@
+import visitor.NodeVisitor;
+import java.util.HashSet;
 import java.util.Set;
 
 /** AST node representing the Kleene star (zero-or-more repetition) of a sub-expression. */
 public class KleeneNode extends Node {
 
-    /** The child sub-expression being repeated. */
-    public Node child;
+    public final Node child;
 
-    /** Always returns true because Kleene star allows zero repetitions. */
+    public KleeneNode(Node child) {
+        this.child = child;
+    }
+
+     /**
+     * c* siempre es nullable (puede generar la cadena vacía).
+     */
     @Override
     public boolean nullable() {
-        // TODO: implement
-        return false;
+        return true;
     }
 
-    /** Returns the firstPos set of the child. */
+    /**
+     * firstPos(c*) = firstPos(c)
+     */
     @Override
     public Set<Integer> firstPos() {
-        // TODO: implement
-        return null;
+        return new HashSet<>(child.firstPos());
     }
 
-    /** Returns the lastPos set of the child. */
+    /**
+     * lastPos(c*) = lastPos(c)
+     */
     @Override
     public Set<Integer> lastPos() {
-        // TODO: implement
-        return null;
+        return new HashSet<>(child.lastPos());
     }
 
-    /** Accepts a visitor and delegates to visitKleene. */
     @Override
     public <T> T accept(NodeVisitor<T> visitor) {
-        // TODO: implement
-        return null;
+        return visitor.visitKleene(this);
     }
-}
+
+    @Override
+    public String toString() {
+        return "(" + child + ")*";
+    }

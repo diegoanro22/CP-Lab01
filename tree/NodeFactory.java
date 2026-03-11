@@ -1,33 +1,38 @@
-/** Factory for creating AST node instances. */
+/**
+ * Patrón Factory: punto central para crear todos los nodos del árbol.
+ */
+
 public class NodeFactory {
 
-    /** Creates a UnionNode with the given left and right children. */
+    // Constructor privado: esta clase no se instancia, solo tiene métodos estáticos.
+    private NodeFactory() {}
+
+    /** Crea un nodo de unión: left | right */
     public static Node union(Node left, Node right) {
-        // TODO: implement
-        return null;
+        return new UnionNode(left, right);
     }
 
-    /** Creates a ConcatNode with the given left and right children. */
+    /** Crea un nodo de concatenación: left · right */
     public static Node concat(Node left, Node right) {
-        // TODO: implement
-        return null;
+        return new ConcatNode(left, right);
     }
 
-    /** Creates a KleeneNode wrapping the given child node. */
+    /** Crea un nodo de estrella de Kleene: child* */
     public static Node kleene(Node child) {
-        // TODO: implement
-        return null;
+        return new KleeneNode(child);
     }
 
-    /** Creates a LeafNode for the given symbol at the given position. */
-    public static Node leaf(int position, char symbol) {
-        // TODO: implement
-        return null;
+    /**
+     * Crea una hoja con símbolo y posición.
+     * @param symbol   carácter del alfabeto (ej. 'a', 'b', '#')
+     * @param position número de etiqueta único (>= 1)
+     */
+    public static Node leaf(char symbol, int position) {
+        return new LeafNode(symbol, position);
     }
 
-    /** Creates a LeafNode representing the epsilon (empty string). */
+    /** Crea un nodo hoja que representa el epsilon (cadena vacía). */
     public static Node epsilon() {
-        // TODO: implement
-        return null;
+        return new LeafNode('ε', -1);
     }
 }

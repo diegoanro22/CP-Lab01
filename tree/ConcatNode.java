@@ -1,39 +1,65 @@
+import visitor.NodeVisitor;
+import java.util.HashSet;
 import java.util.Set;
 
-/** AST node representing the concatenation of two sub-expressions. */
+/**
+ * Nodo interno que representa la concatenación: left · right
+ */
 public class ConcatNode extends Node {
 
-    /** The left operand of the concatenation. */
-    public Node left;
+    public final Node left;
+    public final Node right;
 
-    /** The right operand of the concatenation. */
-    public Node right;
+    public ConcatNode(Node left, Node right) {
+        this.left = left;
+        this.right = right;
+    }
 
-    /** Returns true if both children are nullable. */
+    /**
+     * c1·c2  →  nullable solo si AMBOS son nullable.
+     */
     @Override
     public boolean nullable() {
-        // TODO: implement
-        return false;
+        return left.nullable() && right.nullable();
     }
 
-    /** Returns firstPos of left, union firstPos of right if left is nullable. */
+    /**
+     * firstPos(c1·c2):
+     *   - si c1 es nullable → firstPos(c1) ∪ firstPos(c2)
+     *   - si no             → firstPos(c1)
+     */
     @Override
     public Set<Integer> firstPos() {
-        // TODO: implement
-        return null;
+        if (left.nullable()) {
+            Set<Integer> result = new HashSet<>(left.firstPos());
+            result.addAll(right.firstPos());
+            return result;
+        }
+        return new HashSet<>(left.firstPos());
     }
 
-    /** Returns lastPos of right, union lastPos of left if right is nullable. */
+    /**
+     * lastPos(c1·c2):
+     *   - si c2 es nullable → lastPos(c1) ∪ lastPos(c2)
+     *   - si no             → lastPos(c2)
+     */
     @Override
     public Set<Integer> lastPos() {
-        // TODO: implement
-        return null;
+        if (right.nullable()) {
+            Set<Integer> result = new HashSet<>(left.lastPos());
+            result.addAll(right.lastPos());
+            return result;
+        }
+        return new HashSet<>(right.lastPos());
     }
 
-    /** Accepts a visitor and delegates to visitConcat. */
     @Override
     public <T> T accept(NodeVisitor<T> visitor) {
-        // TODO: implement
-        return null;
+        return visitor.visitConcat(this);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + left + "·" + right + ")";
     }
 }

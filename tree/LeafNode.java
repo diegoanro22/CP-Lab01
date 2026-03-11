@@ -1,39 +1,59 @@
+import visitor.NodeVisitor;
+import java.util.Collections;
 import java.util.Set;
 
-/** Leaf node in the regex AST representing a single symbol at a given position. */
+/**
+ * Hoja del árbol sintáctico.
+ * Representa un símbolo del alfabeto (a, b, #) o epsilon.
+ *
+ * - Si symbol == 'ε', position es -1 y NO se cuenta como posición etiquetada.
+ * - Cualquier otro símbolo tiene un número de posición único >= 1.
+ */
+
 public class LeafNode extends Node {
 
-    /** The position number assigned to this leaf. */
-    public int position;
+    public final char symbol;    // símbolo que representa ('a', 'b', '#', 'ε')
+    public final int position;   // posición única; -1 si es epsilon
 
-    /** The symbol this leaf matches. */
-    public char symbol;
+    public LeafNode(char symbol, int position) {
+        this.symbol = symbol;
+        this.position = position;
+    }
 
-    /** Returns true if this leaf represents the epsilon (empty) symbol. */
+    /**
+     * Solo epsilon es nullable.
+     */
     @Override
     public boolean nullable() {
-        // TODO: implement
-        return false;
+        return symbol == 'ε';
     }
 
-    /** Returns the set of positions that can begin a match (just this position). */
+    /**
+     * firstPos de una hoja:
+     *   - ε     → conjunto vacío  (no aporta posición)
+     *   - otro  → { position }
+     */
     @Override
     public Set<Integer> firstPos() {
-        // TODO: implement
-        return null;
+        if (symbol == 'ε') return Collections.emptySet();
+        return Collections.singleton(position);
     }
 
-    /** Returns the set of positions that can end a match (just this position). */
+    /**
+     * lastPos de una hoja: idéntico a firstPos.
+     */
     @Override
     public Set<Integer> lastPos() {
-        // TODO: implement
-        return null;
+        return firstPos();
     }
 
-    /** Accepts a visitor and delegates to visitLeaf. */
     @Override
     public <T> T accept(NodeVisitor<T> visitor) {
-        // TODO: implement
-        return null;
+        return visitor.visitLeaf(this);
+    }
+
+    @Override
+    public String toString() {
+        return symbol == 'ε' ? "ε" : symbol + "(" + position + ")";
     }
 }
