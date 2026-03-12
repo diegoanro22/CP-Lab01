@@ -1,20 +1,78 @@
-import java.util.Map;
+package dfa;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
-/** Represents a deterministic finite automaton built from a regular expression. */
 public class DFA {
+    private final DFAState initialState;
+    private final List<DFAState> states;
+    private final Set<Character> alphabet;
 
-    /** The initial state of the DFA. */
-    public DFAState initialState;
+    public DFA(DFAState initialState, List<DFAState> states, Set<Character> alphabet) {
+        this.initialState = initialState;
+        this.states = states;
+        this.alphabet = new TreeSet<>(alphabet);
+    }
 
-    /** The set of accepting states in the DFA. */
-    public Set<DFAState> acceptingStates;
+    public DFAState getInitialState() { return initialState; }
 
-    /** The transition table mapping each state and input symbol to the next state. */
-    public Map<DFAState, Map<Character, DFAState>> transitionTable;
+    public List<DFAState> getStates() { return states; }
 
-    /** Prints the DFA transition table to standard output. */
+    public Set<Character> getAlphabet() { return alphabet; }
+
+    /**
+     * Prints the DFA transition table to stdout.
+     * Format:
+     *   Estado    | <sym1>  <sym2> ...
+     *   S0 {..}   |   S1     S2   ...
+     */
     public void printTable() {
-        // TODO: implement
+        // Column widths
+        int stateColWidth = 20;
+        List<Character> symbols = new ArrayList<>(alphabet);
+
+        // Header
+        StringBuilder header = new StringBuilder();
+        header.append(padRight("Estado", stateColWidth)).append("|");
+        for (char sym : symbols) {
+            header.append(padCenter(String.valueOf(sym), 10));
+        }
+        System.out.println(header);
+        System.out.println("-".repeat(stateColWidth + 1 + symbols.size() * 10));
+
+        // Rows
+        for (DFAState state : states) {
+            String stateLabel = "S" + state.getId()
+                    + (state.isAccepting() ? "*" : " ")
+                    + " " + state.getPositions();
+            StringBuilder row = new StringBuilder();
+            row.append(padRight(stateLabel, stateColWidth)).append("|");
+            for (char sym : symbols) {
+                DFAState target = state.getTransition(sym);
+                String cell = (target != null) ? "S" + target.getId() : "-";
+                row.append(padCenter(cell, 10));
+            }
+            System.out.println(row);
+        }
+        System.out.println();
+        System.out.println("(*) = estado de aceptación");
+        System.out.println("Estado inicial: S" + initialState.getId());
+    }
+
+    // ---- Helpers ----
+
+    private static String padRight(String s, int n) {
+        if (s.length() >= n) return s.substring(0, n);
+        return s + " ".repeat(n - s.length());
+    }
+
+    private static String padCenter(String s, int n) {
+        if (s.length() >= n) return " " + s + " ";
+        int totalPad = n - s.length();
+        int left = totalPad / 2;
+        int right = totalPad - left;
+        return " ".repeat(left) + s + " ".repeat(right);
     }
 }
