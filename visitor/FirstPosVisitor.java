@@ -1,3 +1,10 @@
+package visitor;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 import java.util.Set;
 import java.util.HashSet;
 

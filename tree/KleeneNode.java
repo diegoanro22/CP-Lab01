@@ -1,3 +1,10 @@
+package tree;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 import visitor.NodeVisitor;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,3 +51,4 @@ public class KleeneNode extends Node {
     public String toString() {
         return "(" + child + ")*";
     }
+}

@@ -1,3 +1,10 @@
+package regex;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 /**
  * Parser de expresiones regulares usando descenso recursivo.
  *
@@ -96,7 +103,7 @@ public class RegexParser {
         }
 
         return base;
-
+    }
 
     private Node atom() {
         if (pos >= input.length()) {

@@ -36,7 +36,7 @@ public class Main {
             try {
                 // ── 2. Preprocesar: expandir +, ?, insertar ·, agregar # ──────
                 RegexPreprocessor preprocessor = new RegexPreprocessor();
-                String processedRegex = preprocessor.process(rawRegex);
+                String processedRegex = preprocessor.preprocess(rawRegex);
                 System.out.println("  Expresión aumentada: " + processedRegex);
 
                 // ── 3. Parsear y construir árbol ───────────────────────────────
@@ -45,8 +45,7 @@ public class Main {
 
                 // ── 4. Calcular firstPos de la raíz (estado inicial del AFD) ──
                 FirstPosVisitor fpv = new FirstPosVisitor();
-                root.accept(fpv);
-                Set<Integer> initialPositions = fpv.firstPos(root);
+                Set<Integer> initialPositions = root.accept(fpv);
 
                 // ── 5. Calcular followPos y mapa posición→símbolo ─────────────
                 FollowPosVisitor followVisitor = new FollowPosVisitor();
@@ -55,7 +54,7 @@ public class Main {
                 Map<Integer, Character> positionSymbols = followVisitor.getPositionSymbols();
 
                 // Obtener la posición asignada a '#'
-                int hashPosition = parser.getHashPosition();
+                int hashPosition = parser.getPosCounter();
 
                 // ── 6. Construir el AFD ────────────────────────────────────────
                 DFABuilder builder = new DFABuilder(followPos, positionSymbols,

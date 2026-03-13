@@ -1,3 +1,10 @@
+package tree;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 /**
  * Patrón Factory: punto central para crear todos los nodos del árbol.
  */

@@ -1,3 +1,10 @@
+package visitor;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 /** Visitor that computes the nullable property for each AST node. */
 public class NullableVisitor implements NodeVisitor<Boolean> {
 

@@ -1,5 +1,11 @@
 package simulation;
 
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
+
 import dfa.DFA;
 import dfa.DFAState;
 

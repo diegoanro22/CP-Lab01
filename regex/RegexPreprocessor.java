@@ -1,3 +1,10 @@
+package regex;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 /**
  * Preprocesa una expresión regular antes de pasarla al parser.
  *

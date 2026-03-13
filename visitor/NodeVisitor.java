@@ -1,3 +1,10 @@
+package visitor;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 /** Generic visitor interface for traversing regex AST nodes. */
 public interface NodeVisitor<T> {
 

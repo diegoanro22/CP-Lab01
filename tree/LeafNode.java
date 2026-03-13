@@ -1,3 +1,10 @@
+package tree;
+
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
 import visitor.NodeVisitor;
 import java.util.Collections;
 import java.util.Set;

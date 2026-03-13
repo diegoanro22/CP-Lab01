@@ -1,5 +1,11 @@
 package dfa;
 
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
+
 import visitor.FollowPosVisitor;
 
 import java.util.*;

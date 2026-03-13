@@ -1,5 +1,11 @@
 package dfa;
 
+import dfa.*;
+import regex.*;
+import simulation.*;
+import tree.*;
+import visitor.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
