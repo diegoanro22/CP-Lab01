@@ -22,41 +22,6 @@ public class DFA {
 
     public Set<Character> getAlphabet() { return alphabet; }
 
-    public int countStates() {
-        return states.size();
-    }
-
-    public int countTransitions() {
-        int totalTransitions = 0;
-        for (DFAState state : states) {
-            totalTransitions += state.getTransitions().size();
-        }
-        return totalTransitions;
-    }
-
-    public void printSummary(String titulo) {
-        System.out.println("\n--- " + titulo + " ---");
-        System.out.println("Estados: " + countStates());
-        System.out.println("Transiciones: " + countTransitions());
-        System.out.println("Alfabeto: " + alphabet);
-        System.out.println("Estado inicial: S" + initialState.getId());
-    }
-
-    public void printComparison(String tituloActual, DFA otro, String tituloOtro) {
-        int currentStates = countStates();
-        int otherStates = otro.countStates();
-        int currentTransitions = countTransitions();
-        int otherTransitions = otro.countTransitions();
-
-        System.out.println("\n--- Comparación de AFD ---");
-        System.out.println("Estados (" + tituloActual + " -> " + tituloOtro + "): "
-                + currentStates + " -> " + otherStates);
-        System.out.println("Transiciones (" + tituloActual + " -> " + tituloOtro + "): "
-                + currentTransitions + " -> " + otherTransitions);
-        System.out.println("Reducción de estados: " + (currentStates - otherStates));
-        System.out.println("Reducción de transiciones: " + (currentTransitions - otherTransitions));
-    }
-
     /**
      * Prints the DFA transition table to stdout.
      * Format:
@@ -94,6 +59,28 @@ public class DFA {
         System.out.println();
         System.out.println("(*) = estado de aceptación");
         System.out.println("Estado inicial: S" + initialState.getId());
+    }
+
+    // ---- Métricas ----
+
+    public int countStates() {
+        return states.size();
+    }
+
+    public int countTransitions() {
+        int total = 0;
+        for (DFAState s : states) {
+            total += s.getTransitions().size();
+        }
+        return total;
+    }
+
+    public void printSummary(String titulo) {
+        System.out.println("=== " + titulo + " ===");
+        printTable();
+        System.out.println("  Estados    : " + countStates());
+        System.out.println("  Transiciones: " + countTransitions());
+        System.out.println();
     }
 
     // ---- Helpers ----
